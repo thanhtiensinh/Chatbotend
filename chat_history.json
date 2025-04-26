@@ -1,0 +1,34 @@
+[
+    {
+        "question": "trường có bao nhiêu sinh viên",
+        "answer": "Khoảng 1000 sinh viên."
+    },
+    {
+        "question": "bao giờ trường tuyển sinh",
+        "answer": "Trường hiện đang mở tuyển sinh, bạn có thể đăng ký qua fanpage, hoặc nhập thông tin vào from đăng ký để đăng ký ."
+    },
+    {
+        "question": "trường có bao nhiêu khoa",
+        "answer": "7 khoa gồm: công nghệ thông tin, Công nghệ kỹ thuật điện, điện tử, Kỹ thuật môi trường, Quản trị kinh doanh, Ngôn ngữ Anh, Việt Nam học, Ngôn ngữ Trung (dự kiến)."
+    },
+    {
+        "question": "bao nhiêu chuyên ngành",
+        "answer": "7 ngành gồm: công nghệ thông tin, Công nghệ kỹ thuật điện, điện tử, Kỹ thuật môi trường, Quản trị kinh doanh, Ngôn ngữ Anh, Việt Nam học, Ngôn ngữ Trung (dự kiến)."
+    },
+    {
+        "question": "không tôi hỏi về chuyên ngành cơ",
+        "answer": "Có 2 chuyên ngành: Công nghệ phần mềm và Quản trị an ninh mạng."
+    },
+    {
+        "question": "bạn ăn cơm chưa",
+        "answer": "Tôi là Chatbot HPU. Tôi ở đây để giúp bạn giải đáp các thắc mắc về trường, từ thông tin tuyển sinh, học phí, đến các chương trình đào tạo. Bạn muốn hỏi gì?"
+    },
+    {
+        "question": "trường bao giờ tuyển sinh",
+        "answer": "Trường hiện đang mở tuyển sinh, bạn có thể đăng ký qua fanpage, hoặc nhập thông tin vào from đăng ký để đăng ký ."
+    },
+    {
+        "question": "bạn có người yêu không",
+        "answer": "Lỗi khi gọi Gemini API: ChatSession.send_message() got an unexpected keyword argument 'timeout'"
+    }
+]

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Gọi API Flask</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        h2 {
+            color: #555;
+            margin-top: 20px;
+        }
+        .form-section {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #response {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            min-height: 100px;
+            margin-top: 10px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+        #students-list {
+            margin-top: 10px;
+        }
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>Form Gọi API Flask</h1>
+
+    <!-- Form gửi câu hỏi (/ask) -->
+    <div class="form-section">
+        <h2>Gửi câu hỏi (POST /ask)</h2>
+        <form id="ask-form">
+            <label for="question">Câu hỏi:</label>
+            <input type="text" id="question" name="question" placeholder="Nhập câu hỏi..." required>
+            <button type="submit">Gửi câu hỏi</button>
+        </form>
+    </div>
+
+    <!-- Form đăng ký người dùng (/register) -->
+    <div class="form-section">
+        <h2>Đăng ký người dùng (POST /register)</h2>
+        <form id="register-form">
+            <label for="reg-name">Họ và tên:</label>
+            <input type="text" id="reg-name" name="name" placeholder="Nhập họ và tên..." required>
+            <label for="reg-phone">Số điện thoại:</label>
+            <input type="text" id="reg-phone" name="phone" placeholder="Nhập số điện thoại..." required>
+            <label for="reg-email">Email:</label>
+            <input type="email" id="reg-email" name="email" placeholder="Nhập email..." required>
+            <label for="reg-major">Ngành học:</label>
+            <input type="text" id="reg-major" name="major" placeholder="Nhập ngành học..." required>
+            <label for="reg-message">Tin nhắn (tùy chọn):</label>
+            <textarea id="reg-message" name="message" placeholder="Nhập tin nhắn..."></textarea>
+            <button type="submit">Đăng ký</button>
+        </form>
+    </div>
+
+    <!-- Form thêm sinh viên (/add-student) -->
+    <div class="form-section">
+        <h2>Thêm sinh viên (POST /add-student)</h2>
+        <form id="add-student-form">
+            <label for="add-name">Họ và tên:</label>
+            <input type="text" id="add-name" name="name" placeholder="Nhập họ và tên..." required>
+            <label for="add-phone">Số điện thoại:</label>
+            <input type="text" id="add-phone" name="phone" placeholder="Nhập số điện thoại..." required>
+            <label for="add-email">Email:</label>
+            <input type="email" id="add-email" name="email" placeholder="Nhập email..." required>
+            <label for="add-major">Ngành học:</label>
+            <input type="text" id="add-major" name="major" placeholder="Nhập ngành học..." required>
+            <label for="add-message">Tin nhắn (tùy chọn):</label>
+            <textarea id="add-message" name="message" placeholder="Nhập tin nhắn..."></textarea>
+            <button type="submit">Thêm sinh viên</button>
+        </form>
+    </div>
+
+    <!-- Form sửa sinh viên (/update-student) -->
+    <div class="form-section">
+        <h2>Sửa sinh viên (POST /update-student)</h2>
+        <form id="update-student-form">
+            <label for="update-id">ID sinh viên:</label>
+            <input type="number" id="update-id" name="id" placeholder="Nhập ID sinh viên..." required>
+            <label for="update-name">Họ và tên:</label>
+            <input type="text" id="update-name" name="name" placeholder="Nhập họ và tên..." required>
+            <label for="update-phone">Số điện thoại:</label>
+            <input type="text" id="update-phone" name="phone" placeholder="Nhập số điện thoại..." required>
+            <label for="update-email">Email:</label>
+            <input type="email" id="update-email" name="email" placeholder="Nhập email..." required>
+            <label for="update-major">Ngành học:</label>
+            <input type="text" id="update-major" name="major" placeholder="Nhập ngành học..." required>
+            <label for="update-message">Tin nhắn (tùy chọn):</label>
+            <textarea id="update-message" name="message" placeholder="Nhập tin nhắn..."></textarea>
+            <button type="submit">Sửa sinh viên</button>
+        </form>
+    </div>
+
+    <!-- Form xóa sinh viên (/delete-student) -->
+    <div class="form-section">
+        <h2>Xóa sinh viên (POST /delete-student)</h2>
+        <form id="delete-student-form">
+            <label for="delete-id">ID sinh viên:</label>
+            <input type="number" id="delete-id" name="id" placeholder="Nhập ID sinh viên..." required>
+            <button type="submit">Xóa sinh viên</button>
+        </form>
+    </div>
+
+    <!-- Form lấy danh sách sinh viên (/get-students) -->
+    <div class="form-section">
+        <h2>Lấy danh sách sinh viên (GET /get-students)</h2>
+        <button id="get-students-btn">Lấy danh sách sinh viên</button>
+        <div id="students-list"></div>
+    </div>
+
+    <!-- Khu vực hiển thị phản hồi -->
+    <div class="form-section">
+        <h2>Phản hồi từ API</h2>
+        <div id="response">Chưa có phản hồi.</div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://127.0.0.1:5000'; // Đảm bảo đúng cổng của bạn
+
+        // Hàm hiển thị phản hồi
+        function displayResponse(message, isError = false) {
+            const responseDiv = document.getElementById('response');
+            responseDiv.innerHTML = '';
+            if (isError) {
+                responseDiv.classList.add('error');
+                responseDiv.textContent = `Lỗi: ${message}`;
+            } else {
+                responseDiv.classList.remove('error');
+                responseDiv.textContent = message;
+            }
+        }
+
+        // Hàm gọi API chung
+        async function callApi(endpoint, method, data = null) {
+            try {
+                const options = {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                };
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                const response = await fetch(`${API_BASE_URL}/${endpoint}`, options);
+                const result = await response.json();
+                if (response.ok) {
+                    displayResponse(JSON.stringify(result, null, 2));
+                } else {
+                    displayResponse(result.error || 'Lỗi không xác định', true);
+                }
+            } catch (error) {
+                displayResponse(`Lỗi kết nối: ${error.message}`, true);
+            }
+        }
+
+        // Form gửi câu hỏi (/ask)
+        document.getElementById('ask-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const question = document.getElementById('question').value.trim();
+            if (!question) {
+                displayResponse('Vui lòng nhập câu hỏi', true);
+                return;
+            }
+            callApi('ask', 'POST', { question });
+        });
+
+        // Form đăng ký (/register)
+        document.getElementById('register-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('reg-name').value.trim(),
+                phone: document.getElementById('reg-phone').value.trim(),
+                email: document.getElementById('reg-email').value.trim(),
+                major: document.getElementById('reg-major').value.trim(),
+                message: document.getElementById('reg-message').value.trim() || null,
+            };
+            if (!formData.name || !formData.phone || !formData.email || !formData.major) {
+                displayResponse('Vui lòng điền đầy đủ các trường bắt buộc', true);
+                return;
+            }
+            callApi('register', 'POST', formData);
+            document.getElementById('register-form').reset();
+        });
+
+        // Form thêm sinh viên (/add-student)
+        document.getElementById('add-student-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                name: document.getElementById('add-name').value.trim(),
+                phone: document.getElementById('add-phone').value.trim(),
+                email: document.getElementById('add-email').value.trim(),
+                major: document.getElementById('add-major').value.trim(),
+                message: document.getElementById('add-message').value.trim() || null,
+            };
+            if (!formData.name || !formData.phone || !formData.email || !formData.major) {
+                displayResponse('Vui lòng điền đầy đủ các trường bắt buộc', true);
+                return;
+            }
+            callApi('add-student', 'POST', formData);
+            document.getElementById('add-student-form').reset();
+        });
+
+        // Form sửa sinh viên (/update-student)
+        document.getElementById('update-student-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = {
+                id: parseInt(document.getElementById('update-id').value),
+                name: document.getElementById('update-name').value.trim(),
+                phone: document.getElementById('update-phone').value.trim(),
+                email: document.getElementById('update-email').value.trim(),
+                major: document.getElementById('update-major').value.trim(),
+                message: document.getElementById('update-message').value.trim() || null,
+            };
+            if (!formData.id || !formData.name || !formData.phone || !formData.email || !formData.major) {
+                displayResponse('Vui lòng điền đầy đủ các trường bắt buộc', true);
+                return;
+            }
+            callApi('update-student', 'POST', formData);
+            document.getElementById('update-student-form').reset();
+        });
+
+        // Form xóa sinh viên (/delete-student)
+        document.getElementById('delete-student-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const id = parseInt(document.getElementById('delete-id').value);
+            if (!id) {
+                displayResponse('Vui lòng nhập ID hợp lệ', true);
+                return;
+            }
+            callApi('delete-student', 'POST', { id });
+            document.getElementById('delete-student-form').reset();
+        });
+
+        // Nút lấy danh sách sinh viên (/get-students)
+        document.getElementById('get-students-btn').addEventListener('click', async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/get-students`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    displayResponse(JSON.stringify(data, null, 2));
+                    const studentsList = document.getElementById('students-list');
+                    studentsList.innerHTML = '<h3>Danh sách sinh viên:</h3>';
+                    if (data.length === 0) {
+                        studentsList.innerHTML += '<p>Không có sinh viên nào.</p>';
+                    } else {
+                        const ul = document.createElement('ul');
+                        data.forEach(student => {
+                            const li = document.createElement('li');
+                            li.textContent = `ID: ${student.id}, Tên: ${student.name}, Phone: ${student.phone}, Email: ${student.email}, Ngành: ${student.major}`;
+                            ul.appendChild(li);
+                        });
+                        studentsList.appendChild(ul);
+                    }
+                } else {
+                    displayResponse(data.error || 'Lỗi không xác định', true);
+                }
+            } catch (error) {
+                displayResponse(`Lỗi kết nối: ${error.message}`, true);
+            }
+        });
+    </script>
+</body>
+</html>
