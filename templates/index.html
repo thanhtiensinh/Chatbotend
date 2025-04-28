@@ -169,6 +169,8 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
+        const API_BASE_URL = 'https://chatbotend.onrender.com'; // URL của API trên Render
+
         $(document).ready(function() {
             addMessage("Chào mừng đến với HPU, bạn có cần tôi giúp gì không?", 'bot');
 
@@ -216,7 +218,7 @@
                 console.log("Dữ liệu gửi đi:", formData);
 
                 $.ajax({
-                    url: '/register',
+                    url: `${API_BASE_URL}/api/register`,
                     type: 'POST',
                     contentType: 'application/json',
                     data: JSON.stringify(formData),
@@ -244,7 +246,7 @@
                     addMessage(question, 'user');
 
                     $.ajax({
-                        url: '/ask',
+                        url: `${API_BASE_URL}/api/ask`,
                         type: 'POST',
                         contentType: 'application/json',
                         data: JSON.stringify({ "question": question }),
