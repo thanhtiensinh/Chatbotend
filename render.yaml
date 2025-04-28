@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: hpu-chatbot
+    env: python
+    plan: free
+    buildCommand: ""
+    startCommand: python app.py
+    envVars:
+      - key: GEMINI_API_KEY
+        value: <AIzaSyCaPIfqJB95orrd8w7LThFaGaf1r_etC6o>
