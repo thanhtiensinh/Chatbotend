@@ -179,8 +179,10 @@
     </div>
 
     <script>
+        const API_BASE_URL = 'https://chatbotend.onrender.com'; // URL của API trên Render
+
         function fetchUsers() {
-            fetch('/get-students')
+            fetch(`${API_BASE_URL}/api/get-students`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error('Không thể tải dữ liệu');
@@ -196,7 +198,6 @@
                         tbody.innerHTML = '<tr><td colspan="9">Chưa có người đăng ký.</td></tr>';
                     } else {
                         data.forEach((user, index) => {
-                            // Thoát các ký tự đặc biệt để tránh lỗi cú pháp
                             const escapedName = user.name.replace(/'/g, "\\'");
                             const escapedPhone = user.phone.replace(/'/g, "\\'");
                             const escapedEmail = user.email.replace(/'/g, "\\'");
@@ -268,7 +269,7 @@
             }
 
             const data = { name, phone, email, major, message };
-            const url = studentId ? '/update-student' : '/add-student';
+            const url = studentId ? `${API_BASE_URL}/api/update-student` : `${API_BASE_URL}/api/add-student`;
             if (studentId) {
                 data.id = studentId;
             }
@@ -299,7 +300,7 @@
 
         function deleteStudent(studentId) {
             if (confirm("Bạn có chắc chắn muốn xóa sinh viên này?")) {
-                fetch('/delete-student', {
+                fetch(`${API_BASE_URL}/api/delete-student`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
