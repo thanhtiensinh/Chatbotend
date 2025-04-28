@@ -2,6 +2,7 @@ import os
 import sys
 import logging
 from flask import Flask, render_template, request, jsonify
+from flask_cors import CORS  # Thêm import này
 from dotenv import load_dotenv
 from supabase import create_client, Client
 from cbai import load_json_data, save_chat_history, ask_gemini_v2, get_answer, trained_data, CHAT_HISTORY_FILE
@@ -41,6 +42,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # Khởi tạo Flask app
 app = Flask(__name__)
+CORS(app)  # Thêm dòng này để cho phép CORS từ tất cả domain
 
 @app.route("/")
 def home():
@@ -54,7 +56,7 @@ def form():
 def thongtindangky():
     return render_template("thongtindangky_new.html")
 
-@app.route("/ask", methods=["POST"])
+@app.route("/api/ask", methods=["POST"])
 def ask():
     try:
         user_question = request.json.get("question")
@@ -73,12 +75,12 @@ def ask():
         logger.error(f"Lỗi khi xử lý yêu cầu: {str(e)}")
         return jsonify({"error": f"Lỗi khi xử lý yêu cầu: {str(e)}"}), 500
 
-@app.route("/chat-history", methods=["GET"])
+@app.route("/api/chat-history", methods=["GET"])
 def get_chat_history():
     history = load_json_data(CHAT_HISTORY_FILE)
     return jsonify(history)
 
-@app.route("/register", methods=["POST"])
+@app.route("/api/register", methods=["POST"])
 def register():
     try:
         user_data = request.json
@@ -113,7 +115,7 @@ def register():
         logger.error(f"Lỗi khi xử lý đăng ký: {str(e)}")
         return jsonify({"error": f"Lỗi: {str(e)}"}), 500
 
-@app.route("/get-students", methods=["GET"])
+@app.route("/api/get-students", methods=["GET"])
 def get_students():
     try:
         response = supabase.table("consultation_users").select("*").execute()
@@ -123,7 +125,7 @@ def get_students():
         logger.error(f"Lỗi khi lấy danh sách sinh viên: {str(e)}")
         return jsonify({"error": f"Lỗi: {str(e)}"}), 500
 
-@app.route("/add-student", methods=["POST"])
+@app.route("/api/add-student", methods=["POST"])
 def add_student():
     try:
         user_data = request.json
@@ -158,7 +160,7 @@ def add_student():
         logger.error(f"Lỗi khi thêm sinh viên: {str(e)}")
         return jsonify({"error": f"Lỗi: {str(e)}"}), 500
 
-@app.route("/update-student", methods=["POST"])
+@app.route("/api/update-student", methods=["POST"])
 def update_student():
     try:
         user_data = request.json
@@ -196,7 +198,7 @@ def update_student():
         logger.error(f"Lỗi khi cập nhật sinh viên: {str(e)}")
         return jsonify({"error": f"Lỗi: {str(e)}"}), 500
 
-@app.route("/delete-student", methods=["POST"])
+@app.route("/api/delete-student", methods=["POST"])
 def delete_student():
     try:
         user_data = request.json
@@ -215,6 +217,3 @@ def delete_student():
     except Exception as e:
         logger.error(f"Lỗi khi xóa sinh viên: {str(e)}")
         return jsonify({"error": f"Lỗi: {str(e)}"}), 500
-
-if __name__ == "__main__":
-    app.run(debug=False, host='0.0.0.0', port=5000)
