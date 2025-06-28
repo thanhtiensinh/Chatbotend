@@ -114,36 +114,7 @@ def build_chat_history_for_gemini(max_turns=5):
         messages.append({"role": "user", "parts": [item["question"]]})
         messages.append({"role": "model", "parts": [item["answer"]]})
     return messages
-def ask_gemini_with_context(conversation_history, current_question):
-    global gemini_call_count
 
-    # Tạo prompt có ngữ cảnh từ hội thoại trước
-    prompt = (
-        "Bạn là chatbot tư vấn tuyển sinh HPU. Dưới đây là hội thoại trước đó:\n"
-        + "\n".join([f"Người dùng: {q}\nChatbot: {a}" for q, a in conversation_history[-3:]])
-        + f"\nNgười dùng: {current_question}\nChatbot:"
-    )
-
-    if current_question in gemini_cache:
-        return gemini_cache[current_question]
-
-    if gemini_call_count >= GEMINI_CALL_LIMIT:
-        return "Xin lỗi, tôi đã đạt giới hạn trả lời hôm nay."
-
-    try:
-        start_time = time.time()
-        response = model.generate_content(prompt)
-        end_time = time.time()
-        logger.info(f"Thời gian gọi Gemini API: {end_time - start_time:.2f} giây")
-
-        answer = response.text.strip() if response else "Không có phản hồi từ Gemini."
-        gemini_cache[current_question] = answer
-        save_cache(gemini_cache)
-        gemini_call_count += 1
-        return answer
-
-    except Exception as e:
-        return f"Lỗi khi gọi Gemini API (with context): {str(e)}"
 
 def ask_gemini_v2(question):
     global gemini_call_count
