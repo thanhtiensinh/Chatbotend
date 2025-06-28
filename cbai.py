@@ -146,10 +146,6 @@ def ask_gemini_v2(question):
 
     except Exception as e:
         return f"Lỗi khi gọi Gemini API: {str(e)}"
-
-    except Exception as e:
-        return f"Lỗi khi gọi Gemini API: {str(e)}"
-
 def save_chat_history(user_question, bot_response):
     history = load_json_data(CHAT_HISTORY_FILE)
     history.append({"question": user_question, "answer": bot_response})
